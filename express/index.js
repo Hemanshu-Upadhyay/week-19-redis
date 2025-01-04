@@ -18,6 +18,61 @@ app.post("/submit", async (req, res) => {
   }
 });
 
+app.post("/orderprocessing", async (req, res) => {
+  const {
+    product,
+    quantity,
+    customerId,
+    shippingAddress,
+    paymentMethod,
+    shippingMethod,
+    paymentStatus,
+  } = req.body;
+  try {
+    await client.lPush(
+      "orders",
+      JSON.stringify({
+        product,
+        quantity,
+        customerId,
+        shippingAddress,
+        paymentMethod,
+        shippingMethod,
+        paymentStatus,
+      })
+    );
+    // Fake prisma call
+    // await prisma.order.create({
+    //   data: {
+    //     product,
+    //     quantity,
+    //     customerId,
+    //     shippingAddress,
+    //     paymentMethod,
+    //     shippingMethod,
+    //     paymentStatus,
+    //   },
+    // });
+    for (let i = 0; i < 10; i++) {
+      await client.lPush(
+        "orders",
+        JSON.stringify({
+          product,
+          quantity,
+          customerId,
+          shippingAddress,
+          paymentMethod,
+          shippingMethod,
+          paymentStatus,
+        })
+      );
+    }
+    res.json({ message: "Order added successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 const startServer = async () => {
   await client.connect().catch((err) => console.log(err));
   app.listen(3000, () => {

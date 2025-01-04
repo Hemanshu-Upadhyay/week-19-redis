@@ -4,13 +4,37 @@ const client = createClient();
 async function processSubmission(users) {
   const { name, age, email } = JSON.parse(users);
 
-  console.log(`Processing Name ${name}...`);
-  console.log(`Age ${age}`);
-  console.log(`email: ${email}`);
-
   // Simulate processing delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
   console.log(`Finished processing submission for User ${users}.`);
+}
+async function orderprocessing(params) {
+  const {
+    product,
+    quantity,
+    customerId,
+    shippingAddress,
+    paymentMethod,
+    shippingMethod,
+    paymentStatus,
+  } = req.body;
+
+  // Simulate processing delay
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  // Fake prisma call
+  // await prisma.order.create({
+  //   data: {
+  //     product,
+  //     quantity,
+  //     customerId,
+  //     shippingAddress,
+  //     paymentMethod,
+  //     shippingMethod,
+  //     paymentStatus,
+  //   },
+  // });
+
+  console.log(`Finished processing order for User ${users}.`);
 }
 
 async function startWorker() {
